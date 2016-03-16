@@ -19,6 +19,7 @@ WP_ENDPOINT = config['wordpress']['endpoint']
 WP_USER = config['wordpress']['user']
 WP_PASSWORD = config['wordpress']['password']
 
+random.shuffle(SONGFILES)
 songfile = random.choice(SONGFILES)
 
 logging.info('Using {} as seed'.format(songfile))
@@ -40,7 +41,7 @@ content = [lyrics_model.make_sentence(tries=100) for x in range(num_verses)]
 post.content = '\n'.join([s for s in content if s is not None])
 post.post_status = 'publish'
 logging.info('Generating title')
-post.title = titles_model.make_short_sentence(30, tries=100)
+post.title = titles_model.make_sentence(tries=100)
 if post.title is None:
     logging("Can't generate title, using a random sentence")
     post.title = random.choice(content)
