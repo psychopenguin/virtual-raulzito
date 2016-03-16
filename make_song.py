@@ -5,8 +5,11 @@ import json
 import yaml
 import markovify
 import random
+import logging
 from glob import glob
 
+logging.getLogger().setLevel(logging.INFO)
+logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 SONGFILES = glob('*.json')
 
 with open('config.yaml') as config_file:
@@ -18,7 +21,7 @@ WP_PASSWORD = config['wordpress']['password']
 
 songfile = random.choice(SONGFILES)
 
-print('Using {} as seed'.format(songfile))
+logging.info('Using {} as seed'.format(songfile))
 with open(songfile) as f:
     songbase = json.loads(f.read())
 
@@ -28,14 +31,17 @@ lenghts = [len(m.split('\n')) for m in lyrics if m is not None]
 
 
 num_verses = random.choice(range(min(lenghts), max(lenghts) + 1))
-title_len = random.choice(range(10, 50))
+title_len = random.choice(range(5, 50))
 lyrics_model = markovify.text.NewlineText('\n'.join(lyrics))
 titles_model = markovify.text.NewlineText('\n'.join(titles))
 
 post = WordPressPost()
-post.title = titles_model.make_short_sentence(title_len, tries=1000)
-post.content = '\n'.join([lyrics_model.make_sentence(tries=1000) for x in range(num_verses)])
+logging.info('Generating title')
+post.title = titles_model.make_short_sentence(title_len, tries=200)
+logging.info('Generating content with {} sentences'.format(num_verses))
+post.content = '\n'.join([lyrics_model.make_sentence(tries=200) for x in range(num_verses)])
 post.post_status = 'publish'
 
 wp = Client(WP_ENDPOINT, WP_USER, WP_PASSWORD)
+logging.info('Posting to wordpress as {}'.format(post.title))
 wp.call(NewPost(post))
