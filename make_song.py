@@ -37,9 +37,9 @@ titles_model = markovify.text.NewlineText('\n'.join(titles))
 
 post = WordPressPost()
 logging.info('Generating title')
-post.title = titles_model.make_short_sentence(title_len, tries=200)
+post.title = titles_model.make_short_sentence(title_len)
 logging.info('Generating content with {} sentences'.format(num_verses))
-post.content = '\n'.join([lyrics_model.make_sentence(tries=200) for x in range(num_verses)])
+post.content = '\n'.join([lyrics_model.make_sentence() for x in range(num_verses)])
 post.post_status = 'publish'
 
 wp = Client(WP_ENDPOINT, WP_USER, WP_PASSWORD)
