@@ -43,7 +43,7 @@ post.post_status = 'publish'
 logging.info('Generating title')
 post.title = titles_model.make_sentence(tries=100)
 if post.title is None:
-    logging("Can't generate title, using a random sentence")
+    logging.info("Can't generate title, using a random sentence")
     post.title = random.choice(content)
 
 
