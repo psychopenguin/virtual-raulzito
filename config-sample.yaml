@@ -1,0 +1,5 @@
+---
+wordpress:
+    endpoint: "http://WP_URL/xmlrpc.php"
+    user: "WP_USER"
+    password: "WP_PASSWORD"
