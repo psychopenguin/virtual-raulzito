@@ -31,17 +31,17 @@ lenghts = [len(m.split('\n')) for m in lyrics if m is not None]
 
 
 num_verses = random.choice(range(min(lenghts), max(lenghts) + 1))
-title_len = random.choice(range(5, 50))
 lyrics_model = markovify.text.NewlineText('\n'.join(lyrics))
 titles_model = markovify.text.NewlineText('\n'.join(titles))
 
 post = WordPressPost()
 logging.info('Generating title')
-post.title = titles_model.make_short_sentence(title_len)
+post.title = titles_model.make_short_sentence(30, tries=30)
 logging.info('Generating content with {} sentences'.format(num_verses))
-post.content = '\n'.join([lyrics_model.make_sentence() for x in range(num_verses)])
+post.content = '\n'.join([lyrics_model.make_sentence(tries=30) for x in range(num_verses)])
 post.post_status = 'publish'
 
 wp = Client(WP_ENDPOINT, WP_USER, WP_PASSWORD)
 logging.info('Posting to wordpress as {}'.format(post.title))
 wp.call(NewPost(post))
+logging.info('Finished')
