@@ -1,8 +1,12 @@
 from time import sleep
 import json
 from bs4 import BeautifulSoup
+import logging
 
 import requests
+
+logging.getLogger().setLevel(logging.INFO)
+logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
 LETRAS_BASE = 'https://www.letras.mus.br/'
 with open('artists.txt') as f:
@@ -32,10 +36,11 @@ def retrieve_song(html):
     return '\n'.join(text_list)
 
 for artist in ARTISTS:
+    logging.info('Retrieving song list for {}'.format(artist))
     songlist = requests.get(LETRAS_BASE + artist + '/')
     songs = get_songs_list(songlist.text)
     for song in songs:
-        print("Getting '{}'".format(song['title']))
+        logging.info("Getting '{}'".format(song['title']))
         req = requests.get(LETRAS_BASE + song['url'])
         song['lyric'] = retrieve_song(req.text)
         sleep(3)
