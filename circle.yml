@@ -4,6 +4,7 @@ machine:
     version: 3.5.0
 dependencies:
   pre:
+    - pip install -U pip
     - pip install -U flake8
 test:
   override:
