@@ -9,7 +9,8 @@ import logging
 from glob import glob
 
 logging.getLogger().setLevel(logging.INFO)
-logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.basicConfig(format='%(asctime)s %(message)s',
+                    datefmt='%m/%d/%Y %I:%M:%S %p')
 SONGFILES = glob('*.json')
 
 with open('config.yaml') as config_file:

@@ -6,11 +6,13 @@ import logging
 import requests
 
 logging.getLogger().setLevel(logging.INFO)
-logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.basicConfig(format='%(asctime)s %(message)s',
+                    datefmt='%m/%d/%Y %I:%M:%S %p')
 
 LETRAS_BASE = 'https://www.letras.mus.br/'
 with open('artists.txt') as f:
     ARTISTS = f.read().split('\n')
+
 
 def get_songs_list(html):
     soup = BeautifulSoup(html, 'html.parser')
