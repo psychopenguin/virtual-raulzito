@@ -1,0 +1,11 @@
+---
+machine:
+  python:
+    version: 3.5
+dependencies:
+  pre:
+    - pip install -U flake8
+test:
+  override:
+    - flake8 .
+
