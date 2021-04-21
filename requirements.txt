@@ -1,4 +1,4 @@
-PyYAML==3.11
+PyYAML==5.4
 Unidecode==0.04.19
 beautifulsoup4==4.4.1
 markovify==0.2.5
